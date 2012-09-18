@@ -1,4 +1,6 @@
 <?php
+# MicroTpl
+# http://github.com/unu/microtpl
 
 class MicroTpl{
   static function parse($tpl){
@@ -16,7 +18,7 @@ class MicroTpl{
           . 'if(is_array($_item))extract($_item)?>',
         '<?php if(isset($\1)&&!!$\1){ ?>',
         '<?php if(!isset($\1)||!$\1){ ?>',
-        '<?php }if(is_array($_save_\1))extract($_save_\1)?>',
+        '<?php }if(isset($_save_\1)&&is_array($_save_\1))extract($_save_\1)?>',
         '<?php \1?>',
         '<?php echo isset($\1)?$\1:null?>',
         '<?php echo isset($\1)?htmlspecialchars(\$\1,ENT_QUOTES):null?>',
