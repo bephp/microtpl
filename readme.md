@@ -1,21 +1,35 @@
 # MicroTpl
 
+MicroTpl is small templating system for PHP.
+
 ## Usage
- 
+
     <?php
-    $tpl = new StdClass();
+    require_once 'microtpl.php';
+
+    $tpl = new MicroTpl();
     $tpl->title = 'MicroTpl';
-    $tpl->text = 'templating system';
-    
+    $tpl->messages = array(
+      array('message' => 'Hello, Earth'),
+      array('message' => 'We confiscates this planet.')
+    );
+
     ob_start();
-    ?>
 
+    ?><!DOCTYPE html>
     <html>
-      <title>{title}</title>
-      <body>{text}</body>
-    </html>
+      <head>
+        <title>{title}</title>
+      </head>
+      <body>
+        <h1>{title}</h1>
+        {@messages}
+        <p>{message}</p>
+        {/messages}
+      </body>
+    </html><?php
 
-    <?php MicroTpl::render(ob_get_clean(), $tpl);
+    $tpl->render(ob_get_clean());
 
 ## Syntax
 
@@ -26,4 +40,3 @@
     {!bool}  show block on false
     {/list}  end of array or block
     {-php}   alias for <?php php ?>
-
