@@ -5,13 +5,14 @@
 class MicroTpl{
   static function parse($tpl){
     return preg_replace(array(
-        '_{\@([^}]+)}_',    # list array
-        '_{\?([^}]+)}_',    # show on true
-        '_{\!([^}]+)}_',    # show on false
-        '_{\/([^}]+)}_',    # closing mark
-        '_{\-([^}]+)}_',    # php code
-        '_{\&([^}]+)}_',    # unescaped echo
-        '_{([^ }][^}]*)}_', # escaped echo
+        '_{\@([^}]+)}_',            # list array
+        '_{\?([^}]+)}_',            # show on true
+        '_{\!([^}]+)}_',            # show on false
+        '_{\/([^}]+)}_',            # closing mark
+        '_{\&([^}]+)}_',            # unescaped echo
+        '_{([a-zA-Z0-9]+)}_',       # escaped echo
+        '_{([a-zA-Z0-9]+=[^}]+)}_', # assign variable
+        '_{-?([^ }][^}]*)}_',         # php code
       ), array(
         '<?php $_save_\1=get_defined_vars();'
           . 'foreach((isset($\1)&&is_array($\1)?$\1:array())as$_item){ '
@@ -19,9 +20,10 @@ class MicroTpl{
         '<?php if(isset($\1)&&!!$\1){ ?>',
         '<?php if(!isset($\1)||!$\1){ ?>',
         '<?php }if(isset($_save_\1)&&is_array($_save_\1))extract($_save_\1)?>',
-        '<?php \1?>',
         '<?php echo isset($\1)?$\1:null?>',
         '<?php echo isset($\1)?htmlspecialchars(\$\1,ENT_QUOTES):null?>',
+        '<?php $this->\1?>',
+        '<?php \1?>',
       ), $tpl
     );
   }
