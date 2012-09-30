@@ -25,8 +25,13 @@ class MicroTpl{
       ), $tpl
     );
   }
-  function render($_tpl){
+  function render($_tpl, $_return = false){
+    if ($_return) ob_start();
     extract((array) $this);
     eval('?>' . self::parse($_tpl));
+    if ($_return) return ob_get_clean();
+  }
+  function renderFile($file, $return = false){
+    return $this->render(file_get_contents($file), $return);
   }
 }
