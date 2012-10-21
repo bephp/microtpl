@@ -1,6 +1,4 @@
 <?php
-require_once 'ndebugger.php';
-NDebugger::enable();
 
 require_once 'microtpl.php';
 
