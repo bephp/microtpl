@@ -3,6 +3,22 @@
 MicroTpl is small templating system for PHP.
 
 ## Example
+### index.tpl.php
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>{title}</title>
+      </head>
+      <body>
+        <h1>{title}</h1>
+        {@messages as key => message}
+        <p>{message}</p>
+        {/messages}
+      </body>
+    </html>
+
+### index.php
 
     <?php
 
