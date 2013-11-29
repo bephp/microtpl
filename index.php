@@ -5,8 +5,8 @@ require_once 'microtpl.php';
 $tpl = new MicroTpl();
 $tpl->title = 'MicroTpl';
 $tpl->messages = array(
-  array('message' => 'Hello, Earth'),
-  array('message' => 'We confiscates this planet.')
+  'Hello, Earth',
+  'We confiscates this planet.'
 );
 
 ob_start();
@@ -19,9 +19,10 @@ ob_start();
   <body>
     <h1>{title}</h1>
     {@messages}
-    <p>{message}</p>
+    <p>{value}</p>
     {/messages}
   </body>
 </html><?php
-
-$tpl->render(ob_get_clean());
+$t = ob_get_clean();
+echo MicroTpl::parse($t), "\n";
+$tpl->render($t);
