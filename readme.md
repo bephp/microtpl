@@ -17,6 +17,8 @@ MicroTpl is small templating system for PHP.
 	  </body>
 	</html>
 
+
+
 * index.php
 
 	<?php
