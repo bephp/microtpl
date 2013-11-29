@@ -24,5 +24,8 @@ function render($tpl, $data = array(), $return = false) {
 	}, $tpl));
     if ($return) return ob_get_clean();
 }
-render(file_get_contents('index.tpl.php'), array('title' => 'Hello world.', 'messages' => array('Hello, Earth', 'We confiscates this planet.')));
+render(file_get_contents('index.tpl.php'), array(
+	'title' => 'Hello world.', 
+	'messages' => array('Hello, Earth', 'We confiscates this planet.')
+));
 
