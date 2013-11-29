@@ -49,7 +49,7 @@ MicroTpl is small templating system for PHP.
 		'title' => 'Hello world.', 
 		'messages' => array('Hello, Earth', 'We confiscates this planet.')
 	));
-
+	?>
 
 ## Syntax
 
