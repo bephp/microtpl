@@ -18,8 +18,8 @@ ob_start();
   </head>
   <body>
     <h1>{title}</h1>
-    {@messages}
-    <p>{value}</p>
+    {@messages as key => message}
+    <p>{message}</p>
     {/messages}
   </body>
 </html><?php

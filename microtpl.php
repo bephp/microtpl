@@ -2,9 +2,15 @@
 class MicroTpl{
   static function parse ($tpl){
 		return preg_replace_callback('_{([\@\/\-\?\!\&]?)([^}]+)}_', function ($m) {
-			$args = preg_split('/[\s]+/', trim($m[2]));
+			$args = preg_split('/([\s]+)/', trim(str_replace(array('as', '=>'), '', $m[2])));
+			//array_pop($args);
 			switch($m[1]) {
-				case '@':$args[1] = isset($args[1])?$args[1]:'key';$args[2] = isset($args[2])?$args[2]:'value';$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]} => \${$args[2]}) {";break;
+				case '@':if(count($args) == 3){
+					$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]} => \${$args[2]}) {";
+				} else {
+					$args[1] = isset($args[1])?$args[1]:'value';
+					$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]}) {";
+				}break;
 				case '?':$r = "if(isset(\${$args[0]})&&!!\${$args[0]}){";break;
 				case '!':$r = "if(!isset(\${$args[0]})||!\${$args[0]}){";break;
 				case '/':$r = '}';break;
