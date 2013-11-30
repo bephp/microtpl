@@ -5,7 +5,7 @@ function render($tpl, $data = array(), $return = false) {
     extract($data);
     eval('?>' .preg_replace_callback('_{([\@\/\-\?\!\&]?)([^}]+)}_', function ($m) {
 		$args = preg_split('/([\s]+)/', trim(str_replace(array('as', '=>'), '', $m[2])));
-		switch($m[1]) {
+		switch($m[1]) {// {@messages as index => message}  list array. 
 			case '@':
 				if(count($args) == 3)
 					$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]} => \${$args[2]}) {";
@@ -13,12 +13,12 @@ function render($tpl, $data = array(), $return = false) {
 					$args[1] = isset($args[1])?$args[1]:'value';
 					$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]}) {";
 				}break;
-			case '?':$r = "if(isset(\${$args[0]})&&!!\${$args[0]}){";break;
-			case '!':$r = "if(!isset(\${$args[0]})||!\${$args[0]}){";break;
-			case '/':$r = '}';break;
-			case '&':$r = "echo isset(\${$args[0]})?\${$args[0]}:null";break;
-			case '-':$r = implode(' ', $args);break;
-			default: $r = "echo isset(\${$args[0]})?htmlspecialchars(\${$args[0]},ENT_QUOTES):null";
+			case '?':$r = "if(isset(\${$args[0]})&&!!\${$args[0]}){";break; // {?var} show on true
+			case '!':$r = "if(!isset(\${$args[0]})||!\${$args[0]}){";break; // {?var} show on false
+			case '/':$r = '}';break; // end mark
+			case '&':$r = "echo isset(\${$args[0]})?\${$args[0]}:null";break; // echo 
+			case '-':$r = implode(' ', $args);break; // php code
+			default: $r = "echo isset(\${$args[0]})?htmlspecialchars(\${$args[0]},ENT_QUOTES):null"; // echo 
 		}
 		return "<?php $r?>";	
 	}, $tpl));
