@@ -14,11 +14,11 @@ function render($tpl, $data = array(), $return = false) {
 					$r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]}) {";
 				}break;
 			case '?':$r = "if(isset(\${$args[0]})&&!!\${$args[0]}){";break; // {?var} show on true
-			case '!':$r = "if(!isset(\${$args[0]})||!\${$args[0]}){";break; // {?var} show on false
+			case '!':$r = "if(!isset(\${$args[0]})||!\${$args[0]}){";break; // {!var} show on false
 			case '/':$r = '}';break; // end mark
-			case '&':$r = "echo isset(\${$args[0]})?\${$args[0]}:null";break; // echo 
+			case '&':$r = "echo isset(\${$args[0]})?\${$args[0]}:null";break; // {&var} echo 
 			case '-':$r = implode(' ', $args);break; // php code
-			default: $r = "echo isset(\${$args[0]})?htmlspecialchars(\${$args[0]},ENT_QUOTES):null"; // echo 
+			default: $r = "echo isset(\${$args[0]})?htmlspecialchars(\${$args[0]},ENT_QUOTES):null"; // {var} echo 
 		}
 		return "<?php $r?>";	
 	}, $tpl));
