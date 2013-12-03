@@ -4,6 +4,7 @@ MicroTpl is small templating system for PHP.
 
 ## Example
 * index.tpl.php
+
     <!DOCTYPE html>
     <html>
       <head>
@@ -22,15 +23,14 @@ MicroTpl is small templating system for PHP.
 * index.php
 
     <?php
-
     function render($tpl, $data = array(), $return = false) {
         if ($return) ob_start();
         extract($data);
         eval('?>' .preg_replace_callback('_{([\@\/\-\?\!\&]?)([^}]+)}_', function ($m) {
-            $args = preg_split('/([\s]+)/', trim(str_replace(array('as', '=>'), '', $m[2])));
+        $args = preg_split('/([\s]+)/', trim(str_replace(array('as', '=>'), '', $m[2])));
             switch($m[1]) {// {@messages as index => message}  list array. 
                 case '@':
-                    if(count($args) == 3)
+                if(count($args) == 3)
                         $r = "if(isset(\${$args[0]})) foreach(\${$args[0]} as \${$args[1]} => \${$args[2]}) {";
                     else {
                         $args[1] = isset($args[1])?$args[1]:'value';
