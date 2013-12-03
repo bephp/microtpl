@@ -4,10 +4,6 @@ MicroTpl is small templating system for PHP.
 
 ## Example
 
-
-
-* index.php
-
     <?php
     function render($tpl, $data = array(), $return = false) {
         if ($return) ob_start();
