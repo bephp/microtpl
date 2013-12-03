@@ -47,7 +47,7 @@ MicroTpl is small templating system for PHP.
 	  </body>
 	</html>
 	
-## Output
+## Syntax
 
     t:content="$title"
 	t:if="isset($messages)"	
