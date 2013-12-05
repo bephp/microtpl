@@ -20,9 +20,8 @@ class MicroTpl{
 	}
 	public static function parse($source) {
 		$view = $source. 'c';
-		if (@filemtime($source)>@filemtime($view)) {
-			@file_put_contents($view, new self())->_parse(file_get_contents($source)));
-		}
+		if (@filemtime($source)>@filemtime($view))
+			@file_put_contents($view, (new self())->_parse(file_get_contents($source)));
 		return $view;
 	}
     protected function _parse($template) {
@@ -33,11 +32,13 @@ class MicroTpl{
 		return ob_get_clean();
     }
 	public static function render($view, $data = array(), $layout = '') {
+		if(!is_file($view)) throw new CException('View file "'. $view. '" does not exist.');
 		extract($data);
 		ob_start();
 		include (self::parse($view));
 		$content = ob_get_clean();
-		include (self::parse($layout));
+		if (!is_file($layout)) echo $content;
+		else include (self::parse($layout));
 	}
     protected function tag_open($parser, $tag, $attr) {
 		$this->depth++;
