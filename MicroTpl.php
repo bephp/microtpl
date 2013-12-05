@@ -6,7 +6,6 @@ class MicroTpl{
 	public $content = array();
 	public $replace = array();
 	public $parser;
-	public $data = array();
 	const PREFIX = 'tal:';
 	
 	public function __construct() {
@@ -16,22 +15,26 @@ class MicroTpl{
         xml_set_element_handler($this->parser, "tag_open", "tag_close");
         xml_set_character_data_handler($this->parser, "cdata");
 	}
-	public function __set($var, $val) {
-		$this->data[$var] = $val;
+	public function __destruct() {
+		xml_parser_free($this->parser);
 	}
-	public function & __get($var) {
-		if (!isset($this->data[$var])) $this->data[$var] = null;
-		return $this->data[$var];
+	public static function parse($template) {
+		return (new self())->_parse($template);
 	}
-    public function parse($data) {
-		preg_match('@<\!DOCTYPE[^>]*>@', $data, $doctype);
+    protected function _parse($template) {
+		preg_match('@<\!DOCTYPE[^>]*>@', $template, $doctype);
 		ob_start();
 		echo (isset($doctype[0]) ? $doctype[0] . "\n" : '');
-        xml_parse($this->parser, $data);
-		extract($this->data);
-		//echo ob_get_clean();
-		eval('?>'. ob_get_clean());
+        xml_parse($this->parser, $template);
+		return ob_get_clean();
     }
+	public static function render($view, $data = array(), $layout = '') {
+		extract($data);
+		ob_start();
+		eval('?>'. self::parse(file_get_contents($view)));
+		$content = ob_get_clean();
+		eval('?>'. self::parse(file_get_contents($layout)));
+	}
     protected function tag_open($parser, $tag, $attr) {
 		$this->depth++;
 		if (count($this->content)) return ;

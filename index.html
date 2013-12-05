@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title class="title" tal:content="$title"><h1>title h1 place holder </h1></title>
-  </head>
-  <body>
-    <h1 tal:content="$title">title place holder</h1>
-	<hr/>
+<div id="content">
     <div tal:condition="isset($messages)">
         <p tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</p>
 		<p tal:replace="">message2 place holder</p>
     </div>
-  </body>
-</html>
+</div>	
