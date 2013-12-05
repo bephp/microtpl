@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title class="title" t:content="$title"><h1>title h1 place holder </h1></title>
+    <title class="title" tal:content="$title"><h1>title h1 place holder </h1></title>
   </head>
   <body>
-    <h1 t:content="$title">title place holder</h1>
+    <h1 tal:content="$title">title place holder</h1>
 	<hr/>
-    <div t:if="isset($messages)">
-        <p t:foreach="$messages as $key => $message" t:content="$message">message1 place holder</p>
-		<p t:replace="">message2 place holder</p>
+    <div tal:condition="isset($messages)">
+        <p tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</p>
+		<p tal:replace="">message2 place holder</p>
     </div>
   </body>
 </html>

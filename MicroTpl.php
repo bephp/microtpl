@@ -1,13 +1,13 @@
 <?php 
 class MicroTpl{
 	public $depth;
-	public $foreach = array();
-	public $if = array();
+	public $repeat = array();
+	public $condition = array();
 	public $content = array();
 	public $replace = array();
 	public $parser;
 	public $data = array();
-	const PREFIX = 't:';
+	const PREFIX = 'tal:';
 	
 	public function __construct() {
 		$this->parser = xml_parser_create();
@@ -29,16 +29,17 @@ class MicroTpl{
 		echo (isset($doctype[0]) ? $doctype[0] . "\n" : '');
         xml_parse($this->parser, $data);
 		extract($this->data);
+		//echo ob_get_clean();
 		eval('?>'. ob_get_clean());
     }
     protected function tag_open($parser, $tag, $attr) {
 		$this->depth++;
 		if (count($this->content)) return ;
 		
-		foreach(array('if', 'foreach') as $k) {
+		foreach(array('condition' => 'if', 'repeat' => 'foreach') as $k => $v) {
 			if (isset($attr[$key = self::PREFIX.$k])) {
-				$this->{$k}[$this->depth] = $k;
-				echo "<?php $k({$attr[$key]}):?>";
+				$this->{$k}[$this->depth] = $v;
+				echo "<?php $v({$attr[$key]}):?>";
 				unset($attr[$key]);
 			}
 		}
@@ -68,9 +69,9 @@ class MicroTpl{
 		}
 		if (!count($this->content)) echo "</$tag>\n";
 		
-		foreach(array('if', 'foreach') as $k) {
+		foreach(array('condition' => 'if', 'repeat' => 'foreach') as $k => $v) {
 			if (isset($this->{$k}[$this->depth])) {
-				echo "<?php end$k;?>";
+				echo "<?php end$v;?>";
 				unset($this->{$k}[$this->depth]);
 			}
 		}
