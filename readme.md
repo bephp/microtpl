@@ -13,8 +13,8 @@ MicroTpl is small templating system for PHP.
 	  <body>
 		<h1 tal:content="$title">title place holder</h1>
 		<hr/>
-		<div tal:if="isset($messages)">
-			<p tal:foreach="$messages as $key => $message" tal:content="$message">message1 place holder</p>
+		<div tal:condition="isset($messages)">
+			<p tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</p>
 			<p tal:replace="">message2 place holder</p>
 		</div>
 	  </body>
@@ -50,6 +50,6 @@ MicroTpl is small templating system for PHP.
 ## Syntax
 
     tal:content="$title"
-	tal:if="isset($messages)"	
-	tal:foreach="$messages as $key => $message"
+	tal:condition="isset($messages)"	
+	tal:repeat="$messages as $key => $message"
 	tal:replace=""
