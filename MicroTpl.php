@@ -18,8 +18,12 @@ class MicroTpl{
 	public function __destruct() {
 		xml_parser_free($this->parser);
 	}
-	public static function parse($template) {
-		return (new self())->_parse($template);
+	public static function parse($source) {
+		$view = $source. 'c';
+		if (@filemtime($source)>@filemtime($view)) {
+			@file_put_contents($view, new self())->_parse(file_get_contents($source)));
+		}
+		return $view;
 	}
     protected function _parse($template) {
 		preg_match('@<\!DOCTYPE[^>]*>@', $template, $doctype);
@@ -31,9 +35,9 @@ class MicroTpl{
 	public static function render($view, $data = array(), $layout = '') {
 		extract($data);
 		ob_start();
-		eval('?>'. self::parse(file_get_contents($view)));
+		include (self::parse($view));
 		$content = ob_get_clean();
-		eval('?>'. self::parse(file_get_contents($layout)));
+		include (self::parse($layout));
 	}
     protected function tag_open($parser, $tag, $attr) {
 		$this->depth++;
