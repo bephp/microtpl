@@ -3,4 +3,8 @@
         <p tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</p>
 		<p tal:replace="">message2 place holder</p>
     </div>
+	<ul tal:condition="isset($messages)">
+        <li tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</li>
+		<li tal:replace="">message2 place holder</li>
+    </ul>
 </div>   

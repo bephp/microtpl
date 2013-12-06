@@ -20,8 +20,10 @@ class MicroTpl{
 	}
 	public static function parse($source) {
 		$view = $source. 'c';
-		if (@filemtime($source)>@filemtime($view))
-			@file_put_contents($view, (new self())->_parse(file_get_contents($source)));
+		if (@filemtime($source)>@filemtime($view)) {
+			$parser = new self();
+			@file_put_contents($view, $parser->_parse(@file_get_contents($source)));
+		}
 		return $view;
 	}
     protected function _parse($template) {
@@ -29,6 +31,7 @@ class MicroTpl{
 		ob_start();
 		echo (isset($doctype[0]) ? $doctype[0] . "\n" : '');
         xml_parse($this->parser, $template);
+		echo "\n";
 		return ob_get_clean();
     }
 	public static function render($view, $data = array(), $layout = '') {
@@ -75,7 +78,7 @@ class MicroTpl{
 				if ('replace' === $k) return $this->depth--;
 			}
 		}
-		if (!count($this->content)) echo "</$tag>\n";
+		if (!count($this->content)) echo "</$tag>";
 		
 		foreach(array('condition' => 'if', 'repeat' => 'foreach') as $k => $v) {
 			if (isset($this->{$k}[$this->depth])) {
