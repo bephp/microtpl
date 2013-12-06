@@ -2,6 +2,14 @@
 <html>
   <head>
     <title class="title" tal:content="$title">title place holder</title>
+	<style>
+		#content {margin: auto;width:80%; position: relative;}
+		#content #menu, #content #message {width:15%;float:left;}
+		#content #menu {position: fixed;}
+		#content #message {width: 75%;margin-left: 15%;}
+		.odd, .even {font-size: small;color: #333333;background-color: #EEEEEE;}
+		.even {background-color: #DDDDDD;}
+	</style>
   </head>
   <body>
 	<h1 tal:content="$title">title place holder</h1>

@@ -62,6 +62,14 @@ MicroTpl is small templating system for PHP.
 	tal:condition="isset($messages)"	
 	tal:repeat="$messages as $key => $message"
 	tal:replace=""
+	/**
+	 * Replace the attributes of the tag with php code. 
+	 * Can using the attribute names such as 'id', 'href', 'class' and so on.
+	 */
+	tal:id="'message-'.($key+1)"
+	tal:href="'#message-'.($key+1)"
+	tal:class="($key%2 ? 'odd' : 'even')" 
+	......
 
 ## API refrence
 
