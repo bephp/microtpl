@@ -1,10 +1,16 @@
 <div id="content">
-    <div tal:condition="isset($messages)">
-        <p tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</p>
-		<p tal:replace="">message2 place holder</p>
-    </div>
 	<ul tal:condition="isset($messages)">
-        <li tal:repeat="$messages as $key => $message" tal:content="$message">message1 place holder</li>
-		<li tal:replace="">message2 place holder</li>
+        <li tal:repeat="$messages as $key => $message" tal:class="($key%2 ? 'odd' : 'even')" >
+			<a href="#message-1" tal:content="$message['title']" tal:href="'#message-'.($key+1)">message1</a>
+		</li>
+		<li tal:replace="">
+			<a href="#message-2">message2</a>
+		</li>
     </ul>
+	<hr />
+    <div tal:condition="isset($messages)">
+        <pre id="message-1" tal:id="'message-'.($key+1)" tal:repeat="$messages as $key => $message" tal:content="$message['content']">message1 place holder</pre>
+		<pre id="message-2" tal:replace="">message2 place holder</pre>
+    </div>
+
 </div>   

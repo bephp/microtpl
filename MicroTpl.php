@@ -45,20 +45,23 @@ class MicroTpl{
 	}
     protected function tag_open($parser, $tag, $attr) {
 		$this->depth++;
-		if (count($this->content)) return ;
+		if (count($this->content) || count($this->replace)) return ;
 		
-		foreach(array('condition' => 'if', 'repeat' => 'foreach') as $k => $v) {
-			if (isset($attr[$key = self::PREFIX.$k])) {
-				$this->{$k}[$this->depth] = $v;
-				echo "<?php $v({$attr[$key]}):?>";
+		foreach($attr as $key => $val) {
+			if (false !== ($i = strpos($key, self::PREFIX)) && $k = substr($key, $i+4)) {
+				if (in_array($k, array_keys($temp = array('condition' => 'if', 'repeat' => 'foreach')))) {
+					$this->{$k}[$this->depth] = $temp[$k];
+					echo "<?php {$temp[$k]}({$attr[$key]}):?>";
+				} elseif (in_array($k, array('content', 'replace'))) {
+					$this->{$k}[$this->depth] = $attr[$key];
+					if ('replace' === $k) {
+						unset($attr[$key]);
+						return ;
+					}
+				} else {
+					$attr[$k] = "<?php echo {$attr[$key]};?>";
+				}
 				unset($attr[$key]);
-			}
-		}
-		foreach(array('content', 'replace') as $k) {
-			if (isset($attr[$key = self::PREFIX.$k])) {
-				$this->{$k}[$this->depth] = $attr[$key];
-				unset($attr[$key]);
-				if ('replace' === $k) return ;
 			}
 		}
 		if (count($attr)) {
