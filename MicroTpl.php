@@ -81,7 +81,7 @@ class MicroTpl{
 				if ('replace' === $k) return $this->depth--;
 			}
 		}
-		if (!count($this->content)) echo "</$tag>";
+		if (!count($this->content) && !count($this->replace)) echo "</$tag>";
 		
 		foreach(array('condition' => 'if', 'repeat' => 'foreach') as $k => $v) {
 			if (isset($this->{$k}[$this->depth])) {
