@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Microtpl : small template attribute language implemention for PHP (using xml_parse)" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Microtpl</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lloydzhou/microtpl">View on GitHub</a>
+
+          <h1 id="project_title">Microtpl</h1>
+          <h2 id="project_tagline">small template attribute language implemention for PHP (using xml_parse)</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lloydzhou/microtpl/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lloydzhou/microtpl/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="microtpl" class="anchor" href="#microtpl"><span class="octicon octicon-link"></span></a>MicroTpl</h1>
+
+<p>MicroTpl is small templating system for PHP.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<h3>
+<a name="layout" class="anchor" href="#layout"><span class="octicon octicon-link"></span></a>layout.</h3>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title class="title" tal:content="$title"&gt;title place holder&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1 tal:content="$title"&gt;title place holder&lt;/h1&gt;
+    &lt;hr/&gt;
+    &lt;div tal:replace="$content"&gt;Contents&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3>
+<a name="output-layouthtmlc" class="anchor" href="#output-layouthtmlc"><span class="octicon octicon-link"></span></a>output layout.htmlc</h3>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title class="title"&gt;&lt;?php echo $title;?&gt;&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;&lt;?php echo $title;?&gt;&lt;/h1&gt;
+    &lt;hr&gt;&lt;/hr&gt;
+    &lt;?php echo $content;?&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h3>
+<a name="indexhtml" class="anchor" href="#indexhtml"><span class="octicon octicon-link"></span></a>index.html</h3>
+
+<pre><code>&lt;div id="content"&gt;
+    &lt;div id="menu"&gt;
+        &lt;ul tal:condition="isset($messages)"&gt;
+            &lt;li tal:repeat="$messages as $key =&gt; $message" &gt;
+                &lt;a href="#message-1" tal:content="$message['title']" tal:href="'#message-'.($key+1)"&gt;message1&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li tal:replace=""&gt;
+                &lt;a href="#message-2"&gt;message2&lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div id="message" tal:condition="isset($messages)"&gt;
+        &lt;div id="message-1" tal:id="'message-'.($key+1)" tal:repeat="$messages as $key =&gt; $message" tal:class="($key%2 ? 'odd' : 'even')" &gt;
+            &lt;h2&gt;Message #&lt;span tal:replace="$key+1"&gt; 1&lt;/span&gt;&lt;/h2&gt;
+            &lt;pre tal:content="$message['content']"&gt;message1 place holder&lt;/pre&gt;
+        &lt;/div&gt;
+        &lt;div id="message-2" tal:replace=""&gt;
+            &lt;h2&gt;message # 2&lt;/h2&gt;
+            &lt;pre&gt;message2 place holder&lt;/pre&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;   
+</code></pre>
+
+<h3>
+<a name="output-indexhtmlc" class="anchor" href="#output-indexhtmlc"><span class="octicon octicon-link"></span></a>output index.htmlc</h3>
+
+<pre><code>&lt;div id="content"&gt;
+    &lt;div id="menu"&gt;
+        &lt;?php if(isset($messages)):?&gt;&lt;ul&gt;
+            &lt;?php foreach($messages as $key =&gt; $message):?&gt;&lt;li&gt;
+                &lt;a href="&lt;?php echo '#message-'.($key+1);?&gt;"&gt;&lt;?php echo $message['title'];?&gt;&lt;/a&gt;
+            &lt;/li&gt;&lt;?php endforeach;?&gt;
+
+        &lt;/ul&gt;&lt;?php endif;?&gt;
+    &lt;/div&gt;
+    &lt;?php if(isset($messages)):?&gt;&lt;div id="message"&gt;
+        &lt;?php foreach($messages as $key =&gt; $message):?&gt;&lt;div id="&lt;?php echo 'message-'.($key+1);?&gt;" class="&lt;?php echo ($key%2 ? 'odd' : 'even');?&gt;"&gt;
+            &lt;h2&gt;Message #&lt;?php echo $key+1;?&gt;&lt;/h2&gt;
+            &lt;pre&gt;&lt;?php echo $message['content'];?&gt;&lt;/pre&gt;
+        &lt;/div&gt;&lt;?php endforeach;?&gt;
+
+    &lt;/div&gt;&lt;?php endif;?&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h3>
+<a name="indexphp" class="anchor" href="#indexphp"><span class="octicon octicon-link"></span></a>index.php</h3>
+
+<pre><code>&lt;?php
+include "MicroTpl.php";
+
+$content = &lt;&lt;&lt;STRING
+small template attribute language implement for PHP (using xml_parse)
+small template attribute language implement for PHP (using xml_parse)
+small template attribute language implement for PHP (using xml_parse)
+small template attribute language implement for PHP (using xml_parse)
+small template attribute language implement for PHP (using xml_parse)
+STRING
+;
+MicroTpl::render('index.html', array(
+    'title' =&gt; 'Hello Micro Template', 
+    'messages' =&gt; array(
+        array('title' =&gt; 'message 1', 'content' =&gt; $content),
+        array('title' =&gt; 'message 2', 'content' =&gt; $content),
+        array('title' =&gt; 'message 3', 'content' =&gt; $content),
+        array('title' =&gt; 'message 4', 'content' =&gt; $content),
+        array('title' =&gt; 'message 5', 'content' =&gt; $content),
+        array('title' =&gt; 'message 6', 'content' =&gt; $content),
+        array('title' =&gt; 'message 7', 'content' =&gt; $content),
+        array('title' =&gt; 'message 8', 'content' =&gt; $content),
+        array('title' =&gt; 'message 9', 'content' =&gt; $content),
+        array('title' =&gt; 'message 10', 'content' =&gt; $content)
+    )
+), 'layout.html');
+</code></pre>
+
+<h2>
+<a name="syntax" class="anchor" href="#syntax"><span class="octicon octicon-link"></span></a>Syntax</h2>
+
+<pre><code>tal:content="$title"
+tal:condition="isset($messages)"    
+tal:repeat="$messages as $key =&gt; $message"
+tal:replace=""
+/**
+ * Replace the attributes of the tag with php code. 
+ * Can using the attribute names such as 'id', 'href', 'class' and so on.
+ */
+tal:id="'message-'.($key+1)"
+tal:href="'#message-'.($key+1)"
+tal:class="($key%2 ? 'odd' : 'even')" 
+......
+</code></pre>
+
+<h2>
+<a name="api-refrence" class="anchor" href="#api-refrence"><span class="octicon octicon-link"></span></a>API refrence</h2>
+
+<pre><code>// parse the template from string 
+public static function parse($template)
+//  render file with layout by using $data.
+public static function render($view, $data = array(), $layout = '') 
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Microtpl maintained by <a href="https://github.com/lloydzhou">lloydzhou</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
