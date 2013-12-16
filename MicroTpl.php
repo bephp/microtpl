@@ -20,19 +20,20 @@ class MicroTpl{
     }
     public static function parse($source) {
         $view = $source. 'c';
-        if (@filemtime($source)>@filemtime($view)) {
+        if (!file_exists($view) || @filemtime($source)>@filemtime($view)) {
             $parser = new self();
             @file_put_contents($view, $parser->_parse(@file_get_contents($source)));
         }
         return $view;
     }
     protected function _parse($template) {
-		return (ob_start() &&  xml_parse($this->parser, $template))
+		return (ob_start() && xml_parse($this->parser, $template))
 			? (preg_match('@<\!DOCTYPE[^>]*>@', $template, $doctype) ? $doctype[0] . "\n" : ''). ob_get_clean(). "\n"
 			: $template;
     }
     public static function render($view, $data = array(), $layout = '') {
-        if(!file_exists($view)) throw new CException('View file "'. $view. '" does not exist.');
+        if(!file_exists($view)) 
+			throw new Exception('View file "'. $view. '" does not exist.');
         extract($data);
         ob_start();
         include (self::parse($view));
