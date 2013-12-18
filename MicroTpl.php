@@ -63,7 +63,7 @@ class MicroTpl{
             }
         }
         if (!empty($attr)) {
-            array_walk($attr, function(&$n, $i) { $n = $i. '="'. $n. '"';});
+            array_walk($attr, create_function('&$n, $i','$n = $i. "=\"$n\"";'));
             echo "<$tag ". implode(' ', $attr). ">";
         } else echo "<$tag>";
     }
