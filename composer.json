@@ -1,0 +1,14 @@
+{
+    "name": "lloydzhou/microtpl",
+    "type": "library",
+    "description": "small template attribute language implemention for PHP (using xml_parse)",
+    "keywords": ["activerecord", "orm"],
+    "homepage": "https://lloydzhou.github.io/microtpl/",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": [ "MicroTpl.php" ]
+     }
+}
