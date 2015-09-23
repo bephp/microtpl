@@ -6,6 +6,7 @@ class MicroTpl{
     public $content = array();
     public $replace = array();
     public $parser;
+    public static $debug;
     const PREFIX = 'tal:';
     
     public function __construct() {
@@ -20,16 +21,21 @@ class MicroTpl{
     }
     public static function parse($source) {
         $view = $source. 'c';
-        if (!file_exists($view) || @filemtime($source)>@filemtime($view)) {
+        if (self::$debug || !file_exists($view) || @filemtime($source)>@filemtime($view)) {
             $parser = new self();
             @file_put_contents($view, $parser->_parse(@file_get_contents($source)));
         }
         return $view;
     }
     protected function _parse($template) {
-		return (ob_start() && xml_parse($this->parser, $template))
-			? (preg_match('@<\!DOCTYPE[^>]*>@', $template, $doctype) ? $doctype[0] . "\n" : ''). ob_get_clean(). "\n"
-			: $template;
+        ob_start();
+        if (xml_parse($this->parser, $template)){
+            $parsed = (preg_match('/<\!DOCTYPE[^>]*>/i', $template, $doctype) ? $doctype[0] . "\n" : ''). ob_get_clean(). "\n";
+            return self::$debug ? $parsed
+                : preg_replace(array('/ {2,}/', '/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'), array(' ', ''), $parsed);
+        }
+        ob_clean();
+        return $template;
     }
     public static function render($view, $data = array(), $layout = '') {
         if(!file_exists($view)) 
@@ -90,3 +96,5 @@ class MicroTpl{
         $this->depth--;
     }
 }
+MicroTpl::$debug = false;
+

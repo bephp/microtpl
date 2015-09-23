@@ -11,6 +11,7 @@ small template attribute language implement for PHP (using xml_parse)
 
 STRING
 ;
+//MicroTpl::$debug = true;
 MicroTpl::render('index.html', array(
 	'title' => 'Hello Micro Template', 
 	'messages' => array(
@@ -26,3 +27,4 @@ MicroTpl::render('index.html', array(
 		array('title' => 'message 10', 'content' => $content)
 	)
 ), 'layout.html');
+
