@@ -97,4 +97,6 @@ class MicroTpl{
     }
 }
 MicroTpl::$debug = false;
-
+function tal($view, $data = array(), $layout = '') {
+    MicroTpl::render($view, $data, $layout);
+}
