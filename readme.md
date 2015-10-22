@@ -6,7 +6,7 @@ MicroTpl is small templating system for PHP.
 
     composer require bephp/microtpl 
 
-There is one [Blog demo](https://github.com/lloydzhou/blog), work with [ActiveRecord](https://github.com/lloydzhou/activerecord) and [Router](https://github.com/lloydzhou/router).
+There is one [Blog demo](https://github.com/bephp/blog), work with [ActiveRecord](https://github.com/bephp/activerecord) and [Router](https://github.com/bephp/router).
 
 ## Example
 ### layout.
