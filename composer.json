@@ -1,5 +1,5 @@
 {
-    "name": "lloydzhou/microtpl",
+    "name": "bephp/microtpl",
     "type": "library",
     "description": "small template attribute language implemention for PHP (using xml_parse)",
     "keywords": ["TAL", "micro", "template", "xml", "library"],
