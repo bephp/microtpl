@@ -21,9 +21,13 @@ class MicroTpl{
     }
     public static function parse($source) {
         $view = $source. 'c';
-        if (self::$debug || !file_exists($view) || @filemtime($source)>@filemtime($view)) {
+        if (self::$debug || !file_exists($view) || @filemtime($source) > @filemtime($view)) {
             $parser = new self();
             @file_put_contents($view, $parser->_parse(@file_get_contents($source)));
+            if (($code = xml_get_error_code($parser->parser)) && self::$debug)
+                throw new Exception(sprintf('Error to parse file: %s, (%s) on line: %d, column: %s',
+                    $view, xml_error_string($code), xml_get_current_line_number($parser->parser),
+                    xml_get_current_column_number($parser->parser)));
         }
         return $view;
     }
@@ -97,6 +101,4 @@ class MicroTpl{
     }
 }
 MicroTpl::$debug = false;
-function tal($view, $data = array(), $layout = '') {
-    MicroTpl::render($view, $data, $layout);
-}
+
