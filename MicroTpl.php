@@ -60,12 +60,12 @@ class MicroTpl{
                 if (in_array($k, array_keys($temp = array('condition' => 'if', 'repeat' => 'foreach')))) {
                     $this->{$k}[$this->depth] = $temp[$k];
                     echo "<?php {$temp[$k]}({$attr[$key]}):?>";
-                } elseif (in_array($k, array('content', 'replace'))) {
+                } elseif ('replace' === $k) {
                     $this->{$k}[$this->depth] = $attr[$key];
-                    if ('replace' === $k) {
-                        unset($attr[$key]);
-                        return ;
-                    }
+                    unset($attr[$key]);
+                    return ;
+                } elseif ('content' === $k && 'meta' != $tag) {
+                    $this->{$k}[$this->depth] = $attr[$key];
                 } else {
                     $attr[$k] = "<?php echo {$attr[$key]};?>";
                 }
